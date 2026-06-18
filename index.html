@@ -3,310 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hit & Blow 攻略ソルバー（マルチ提案）</title>
+    <title>ヒット アンド ブロー攻略ツール</title>
     <!-- Vue.js 3 をCDNから読み込み -->
     <script src="https://unpkg.com"></script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: "MS PGothic", "ヒラギノ角ゴ Pro W3", sans-serif;
+            background-color: #f0f0f0;
+            color: #000000;
+            padding: 10px;
             margin: 0;
-            padding: 20px;
             display: flex;
             justify-content: center;
         }
         .container {
             width: 100%;
-            max-width: 500px;
-            background: var(--card);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            max-width: 550px;
+            background: #ffffff;
+            padding: 15px;
+            border: 2px solid #999999;
+            box-sizing: border-box;
         }
-        h1 { font-size: 1.5rem; text-align: center; margin-bottom: 24px; }
-        .alert {
-            background-color: #ef4444;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
+        h1 {
+            font-size: 1.3rem;
             text-align: center;
+            margin: 5px 0 15px 0;
+            border-bottom: 2px solid #333333;
+            padding-bottom: 5px;
         }
-        .success {
-            background-color: #10b981;
-            color: white;
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .suggestion-box {
-            background: #eff6ff;
-            border: 2px dashed var(--primary);
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-        }
-        .suggestion-title {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #1e40af;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .suggestion-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .suggestion-item {
+        .menu-bar {
+            background: #e0e0e0;
+            padding: 8px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: white;
-            padding: 8px 12px;
-            border: 1px solid #bfdbfe;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
+            border: 1px solid #cccccc;
+            font-size: 0.9rem;
         }
-        .suggestion-item:hover {
-            background: #dbeafe;
-            border-color: var(--primary);
-        }
-        .suggestion-item.selected {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
-        }
-        .num-text {
-            font-size: 1.3rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .badge-recommend {
-            font-size: 0.75rem;
-            background: #f59e0b;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-        .grid-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        button {
-            width: 100%;
+        .mode-section {
+            border: 2px solid #666666;
             padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
+        .mode-title {
             font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        button:hover { opacity: 0.9; }
-        .reset-btn {
-            background: #64748b;
-            margin-top: 12px;
-        }
-        .history {
-            margin-top: 24px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 16px;
-        }
-        .history-item {
+            font-size: 1.05rem;
+            background: #666666;
+            color: white;
+            padding: 3px 8px;
+            margin: -12px -12px 10px -12px;
             display: flex;
             justify-content: space-between;
-            padding: 8px 4px;
-            border-bottom: 1px dashed #e2e8f0;
+            align-items: center;
+        }
+        .btn-action {
+            padding: 2px 10px;
+            cursor: pointer;
+            background: #eeeeee;
+            border: 1px solid #777777;
+            font-size: 0.85rem;
+        }
+        .btn-action:hover { background: #dddddd; }
+        .btn-submit {
+            padding: 4px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #444444;
+            color: white;
+            border: 1px solid #222222;
+        }
+        .btn-submit:hover { background: #222222; }
+        
+        .form-table {
+            width: 100%;
+            margin-bottom: 10px;
+            border-collapse: collapse;
+        }
+        .form-table td {
+            padding: 6px 4px;
+            vertical-align: middle;
             font-size: 0.95rem;
         }
-        .badge {
+        .input-text {
+            width: 110px;
+            padding: 4px;
+            font-size: 1.1rem;
             font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
+            letter-spacing: 2px;
+            text-align: center;
         }
-        .badge-h { background: #fee2e2; color: #ef4444; }
-        .badge-b { background: #fef9c3; color: #ca8a04; }
+        .select-hb {
+            padding: 4px;
+            font-size: 1rem;
+        }
+        
+        .suggestion-zone {
+            background: #fff9e6;
+            border: 1px dashed #ff9900;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        .suggestion-item {
+            display: inline-block;
+            background: #ffffff;
+            border: 1px solid #999999;
+            padding: 2px 8px;
+            margin: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .suggestion-item:hover { background: #e6f2ff; }
+        .suggestion-item.active { background: #3377ff; color: white; }
+
+        .alert-text { color: #cc0000; font-weight: bold; margin: 5px 0; font-size: 0.9rem; }
+        .success-text { color: #008800; font-weight: bold; margin: 5px 0; font-size: 1.1rem; text-align: center; }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #cccccc;
+            padding: 5px;
+            text-align: center;
+        }
+        .history-table th { background: #eeeeee; }
+        .info-count { text-align: right; font-size: 0.85rem; color: #666666; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
 <div id="app" class="container">
-    <h1>Hit & Blow 攻略ツール</h1>
+    <h1>ヒット アンド ブロー攻略</h1>
 
-    <!-- 桁数の選択 -->
-    <div class="form-group" v-if="history.length === 0">
-        <label>ゲームの桁数を選択</label>
-        <select v-model.number="digitsCount" @change="resetGame">
-            <option :value="3">3桁 (候補数: 720)</option>
-            <option :value="4">4桁 (候補数: 5,040)</option>
-            <option :value="5">5桁 (候補数: 30,240)</option>
-            <option :value="6">6桁 (候補数: 151,200)</option>
-        </select>
-    </div>
-    <div class="form-group" v-else style="text-align: center; color: #64748b; font-weight: bold;">
-        【 {{ digitsCount }}桁ルールでプレイ中 】
-    </div>
-
-    <!-- ゲーム終了時（正解確定） -->
-    <div v-if="isGameOver" class="success">
-        🎯 正解は 【 {{ currentGuess }} 】 です！
+    <!-- メニュー・設定バー -->
+    <div class="menu-bar">
+        <div>
+            桁数：
+            <select v-model.number="digitsCount" @change="resetAll" :disabled="hasHistory">
+                <option :value="3">3桁</option>
+                <option :value="4">4桁</option>
+                <option :value="5">5桁</option>
+                <option :value="6">6桁</option>
+            </select>
+        </div>
+        <button class="btn-action" @click="resetAll">全体リセット</button>
     </div>
 
-    <!-- エラーメッセージ -->
-    <div v-if="errorMessage" class="alert">
-        {{ errorMessage }}
-    </div>
+    <!-- ------------------ 攻撃用（自分が探す） ------------------ -->
+    <div class="mode-section">
+        <div class="mode-title">
+            <span>攻撃用（自分が当てるモード）</span>
+            <button class="btn-action" @click="undoAttack" :disabled="attackHistory.length === 0">戻す</button>
+        </div>
 
-    <!-- 残り候補数表示 -->
-    <div style="text-align: right; font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">
-        残り候補: <strong>{{ possibilities.length.toLocaleString() }}</strong> 通り
-    </div>
+        <div v-if="attackGameOver" class="success-text">
+            🎯 攻撃完了！正解は 【 {{ attackGuess }} 】 です！
+        </div>
 
-    <!-- おすすめ候補リスト -->
-    <div v-if="!isGameOver && possibilities.length > 0" class="suggestion-box">
-        <div class="suggestion-title">👇 相手に聞く数字を選んでください（最大5件表示）</div>
-        <div class="suggestion-list">
-            <div v-for="(num, idx) in suggestedGuesses" 
-                 :key="num" 
-                 class="suggestion-item" 
-                 :class="{ selected: currentGuess === num }"
-                 @click="selectSuggestion(num)">
-                <span class="num-text">{{ num }}</span>
-                <span v-if="idx === 0" class="badge-recommend">最善手★</span>
+        <div v-else>
+            <div class="info-count">残り候補: {{ attackPossibilities.length.toLocaleString() }} 通り</div>
+            <div v-if="attackError" class="alert-text">{{ attackError }}</div>
+
+            <table class="form-table">
+                <tr>
+                    <td width="35%">①相手に言う数字：</td>
+                    <td>
+                        <input type="text" class="input-text" v-model="attackGuess" :maxlength="digitsCount">
+                    </td>
+                </tr>
+                <tr>
+                    <td>②相手からの回答：</td>
+                    <td>
+                        ヒット:
+                        <select v-model.number="attackHit" class="select-hb">
+                            <option v-for="n in (digitsCount + 1)" :value="n-1">{{ n-1 }}</option>
+                        </select>
+                        &nbsp;ブロー:
+                        <select v-model.number="attackBlow" class="select-hb">
+                            <option v-for="n in (digitsCount + 1)" :value="n-1">{{ n-1 }}</option>
+                        </select>
+                        &nbsp;
+                        <button class="btn-submit" @click="submitAttack">決定</button>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 候補の複数表示ゾーン -->
+            <div class="suggestion-zone" v-if="attackPossibilities.length > 0">
+                <strong>おすすめの質問候補（クリックで選択）：</strong><br>
+                <span v-for="(num, idx) in attackSuggestions" :key="num" 
+                      class="suggestion-item" :class="{ active: attackGuess === num }"
+                      @click="attackGuess = num">
+                    {{ num }}<span v-if="idx === 0">★</span>
+                </span>
             </div>
         </div>
+
+        <!-- 攻撃履歴 -->
+        <table class="history-table" v-if="attackHistory.length > 0">
+            <thead>
+                <tr><th width="20%">回</th><th width="40%">言った数字</th><th width="40%">回答</th></tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, idx) in attackHistory" :key="idx">
+                    <td>{{ idx + 1 }}</td>
+                    <td><strong>{{ item.guess }}</strong></td>
+                    <td>{{ item.hit }}H {{ item.blow }}B</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- 入力フォーム -->
-    <div v-if="!isGameOver && possibilities.length > 0">
-        <div class="form-group">
-            <label>選んだ数字（手入力も可能）</label>
-            <input type="text" v-model="currentGuess" :maxlength="digitsCount">
+
+    <!-- ------------------ 守備用（相手に当てさせる） ------------------ -->
+    <div class="mode-section">
+        <div class="mode-title">
+            <span>守備用（相手の質問に答えるモード）</span>
+            <button class="btn-action" @click="undoDefense" :disabled="defenseHistory.length === 0">戻す</button>
         </div>
 
-        <div class="form-group grid-inputs">
-            <div>
-                <label>ヒット (H)</label>
-                <select v-model.number="currentHit">
-                    <option v-for="n in (digitsCount + 1)" :key="n-1" :value="n-1">{{ n-1 }}</option>
-                </select>
+        <div v-if="defenseGameOver" class="success-text">
+            🏳️ 守備終了（相手が正解を当てました）
+        </div>
+
+        <div v-else>
+            <div class="info-count">自分の秘密の数字候補: {{ defensePossibilities.length.toLocaleString() }} 通り</div>
+            <div v-if="defenseError" class="alert-text">{{ defenseError }}</div>
+
+            <table class="form-table">
+                <tr>
+                    <td width="35%">①相手が言った数字：</td>
+                    <td>
+                        <input type="text" class="input-text" v-model="defenseGuess" :maxlength="digitsCount">
+                    </td>
+                </tr>
+                <tr>
+                    <td>②相手へ言う回答：</td>
+                    <td>
+                        <span v-if="autoCalculatedResponse">
+                            <strong>{{ autoCalculatedResponse.hit }}</strong> ヒット &nbsp;
+                            <strong>{{ autoCalculatedResponse.blow }}</strong> ブロー
+                        </span>
+                        <span v-else style="color:#777;">数字を正しく入力してください</span>
+                        &nbsp;&nbsp;
+                        <button class="btn-submit" @click="submitDefense" :disabled="!autoCalculatedResponse">決定</button>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 守備用アドバイス（自分の候補が絞られていく様子） -->
+            <div class="suggestion-zone" v-if="defensePossibilities.length > 0 && defensePossibilities.length <= 10">
+                <strong>あなたの設定し得る秘密の数字残高：</strong><br>
+                <span v-for="num in defensePossibilities" :key="num" class="suggestion-item" style="cursor:default;">
+                    {{ num }}
+                </span>
             </div>
-            <div>
-                <label>ブロー (B)</label>
-                <select v-model.number="currentBlow">
-                    <option v-for="n in (digitsCount + 1)" :key="n-1" :value="n-1">{{ n-1 }}</option>
-                </select>
-            </div>
         </div>
 
-        <button @click="submitTurn">結果を確定して次へ</button>
-    </div>
-
-    <!-- リセットボタン -->
-    <button @click="resetGame" class="reset-btn">最初からやり直す</button>
-
-    <!-- 履歴表示 -->
-    <div v-if="history.length > 0" class="history">
-        <h3>これまでのコール履歴</h3>
-        <div v-for="(item, idx) in history" :key="idx" class="history-item">
-            <span>{{ idx + 1 }}. <strong>{{ item.guess }}</strong></span>
-            <span>
-                <span class="badge badge-h">{{ item.hit }}H</span> 
-                <span class="badge badge-b">{{ item.blow }}B</span>
-            </span>
-        </div>
-    </div>
-</div>
-
-<script>
-const { createApp, ref, onMounted } = Vue;
-
-createApp({
-    setup() {
-        const digitsCount = ref(4);
-        const possibilities = ref([]);
-        const suggestedGuesses = ref([]);
-        const currentGuess = ref("");
-        const currentHit = ref(0);
-        const currentBlow = ref(0);
-        const history = ref([]);
-        const errorMessage = ref("");
-        const isGameOver = ref(false);
-
-        // 順列生成（重複なし）
-        const generatePossibilities = (length) => {
-            const result = [];
-            const digits = ['0','1','2','3','4','5','6','7','8','9'];
-            
-            function permute(arr, memo = []) {
-                if (memo.length === length) {
-                    result.push(memo.join(''));
-                    return;
-                }
-                for (let i = 0; i < arr.length; i++) {
-                    let curr = arr.slice();
-                    let next = curr.splice(i, 1);
-                    permute(curr.slice(), memo.concat(next));
-                }
-            }
-            permute(digits);
-            return result;
-        };
-
-        // H/B判定
-        const evaluateGuess = (secret, guess, length) => {
-            let hit = 0;
-            let blow = 0;
-            for (let i = 0; i < length; i++) {
-                if (guess[i] === secret[i]) {
-                    hit++;
-                } else if (secret.includes(guess[i])) {
-                    blow++;
-                }
-            }
-            return { hit, blow };
-        };
-
-        // 優秀なコール候補を最大5つ選出（Minimaxスコア順にソート）
-        const calcBestGuesses = (list, length) => {
-            if (list.length === 0) return [];
-            if (list.length <= 5) return list;
-            
-            let sampleSize = 60;
-            if (length === 5) sampleSize = 40;
-            if (length === 6) sampleSize = 20;
-            
-            const searchPool = list.slice(0, sampleSize);
-            const scoredGuesses = [];
-            
-            for (let guess of searchPool) {
-                const counts = {};
-                for (let secret of list) {
-                    const { hit, blow } = evaluateGuess(secret, guess, length);
-                    const key = `${hit}-${blow}`;
+        <!-- 守備履歴 -->
+        <table class="history-table" v-if="defenseHistory.length > 0">
+            <thead>
+                <tr><th width="20%">回</th><th width="40%">相手の数字</th><th width="40%">返した回答</th></tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, idx) in defenseHistory" :key="idx">
+                    <td>{{ idx + 1 }}</td>
+                    <td><strong>{{ item.guess }}</strong></td>
+                    <td>{{ item.hit }}H {{ item.blow }}B</td>
+                </tr>
